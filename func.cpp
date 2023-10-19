@@ -1,14 +1,24 @@
 #include "func.h"
 
-void Set_str(CandyBar& sweet, const std::string nme, double w, unsigned int c)
+void set(stringly& struc, const char* text)
 {
-    sweet.name = nme;
-    sweet.weight = w;
-    sweet.cal = c;
+    int len = strlen(text);
+    struc.ct = len;
+    char* st = new char[len];
+    strncpy(st, text, len);
+    struc.str = st;
+
+    //delete[] st;
 }
 
-void Print_str(CandyBar& sweet)
+void show(stringly& struc, int n)
 {
-    std::cout << "Candy of " << sweet.name << " has weight = " << sweet.weight
-              << " and calories = " << sweet.cal << std::endl;
+    for (int i = 0; i < n; i++)
+        std::cout << struc.str << std::endl;
+}
+
+void show(char* str, int n)
+{
+    for (int i = 0; i < n; i++)
+        std::cout << str << std::endl;
 }

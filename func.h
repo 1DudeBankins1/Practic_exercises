@@ -4,15 +4,14 @@
 #include <iostream>
 #include <cstring>
 
-struct CandyBar
+struct stringly
 {
-    std::string name;
-    double weight;
-    unsigned int cal;
+    char* str;
+    int ct;
 };
 
-void Set_str(CandyBar& sweet, const std::string nme = "Millenium Munch", double w = 2.85, unsigned int c = 350);
-
-void Print_str(CandyBar& sweet);
+void set(stringly& struc, const char* text);
+void show(stringly& struc, int n = 1);
+void show(char* str, int n = 1);
 
 #endif // FUNC_H

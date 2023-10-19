@@ -2,19 +2,22 @@
 
 int main()
 {
-    CandyBar sweet;
-    char nme[3][30] = {"Milka",
-                       "Konti",
-                       "RotFront"};
+    stringly beany;
+    char testing[] = "Reality isn`t what it used to be.";
 
-    Set_str(sweet);
-    Print_str(sweet);
-    Set_str(sweet, nme[0]);
-    Print_str(sweet);
-    Set_str(sweet, nme[1], 99.9);
-    Print_str(sweet);
-    Set_str(sweet, nme[2], 99.9, 450);
-    Print_str(sweet);
+    set(beany, testing);
+    show(beany);
+    show(beany, 2);
+
+    testing[0] = 'D';
+    testing[1] = 'u';
+
+    show(testing);
+    show(testing, 3);
+    set(beany, testing);
+    show(beany);
+
+    show("Done!");
 
     return 0;
 }
