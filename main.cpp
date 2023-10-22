@@ -2,22 +2,35 @@
 
 int main()
 {
-    stringly beany;
-    char testing[] = "Reality isn`t what it used to be.";
+    int n = 0;
 
-    set(beany, testing);
-    show(beany);
-    show(beany, 2);
+    std::cout << "Enter the number of the handicaps:";
+    std::cin >> n;
+    std::cin.get();
+    golf* g = new golf[n];
 
-    testing[0] = 'D';
-    testing[1] = 'u';
+    int i = 0;
+    bool res;
+    do{
+        res = setgolf(g[i]);
+        if (res)
+            i++;
+    }
+    while(res && (i<n));
 
-    show(testing);
-    show(testing, 3);
-    set(beany, testing);
-    show(beany);
+    n = 0;
+    while (n < i){
+        showgolf(g[n]);
+        n++;
+    }
 
-    show("Done!");
+    if (i > 0){
+        setgolf(g[0], "Dimka Voron", 26);
+        showgolf(g[0]);
+        handicap(g[0], 666);
+        showgolf(g[0]);
+    }
 
+    delete[] g;
     return 0;
 }

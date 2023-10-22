@@ -4,14 +4,16 @@
 #include <iostream>
 #include <cstring>
 
-struct stringly
+const int LEN = 40;
+struct golf
 {
-    char* str;
-    int ct;
+    char fullname[LEN];
+    int handicap;
 };
 
-void set(stringly& struc, const char* text);
-void show(stringly& struc, int n = 1);
-void show(char* str, int n = 1);
+int setgolf(golf& g);
+void setgolf(golf& g, const char* name, int hc);
+void handicap(golf& g, int hc);
+void showgolf(const golf& g);
 
 #endif // FUNC_H
