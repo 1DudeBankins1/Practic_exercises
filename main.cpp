@@ -2,35 +2,19 @@
 
 int main()
 {
-    int n = 0;
+    int arr_int[5];
+    double arr_doub[5];
 
-    std::cout << "Enter the number of the handicaps:";
-    std::cin >> n;
-    std::cin.get();
-    golf* g = new golf[n];
+    std::cout << "Enter the 5 numbers of int array:";
+    for (int i = 0; i < 5; i++)
+        std::cin >> arr_int[i];
 
-    int i = 0;
-    bool res;
-    do{
-        res = setgolf(g[i]);
-        if (res)
-            i++;
-    }
-    while(res && (i<n));
+    std::cout << "Enter the 5 numbers of double array:";
+    for (int i = 0; i < 5; i++)
+        std::cin >> arr_doub[i];
 
-    n = 0;
-    while (n < i){
-        showgolf(g[n]);
-        n++;
-    }
+    std::cout << "The max of int array:\n" << max5(arr_int) << "\n";
+    std::cout << "The max of double array:\n" << max5(arr_doub) << "\n";
 
-    if (i > 0){
-        setgolf(g[0], "Dimka Voron", 26);
-        showgolf(g[0]);
-        handicap(g[0], 666);
-        showgolf(g[0]);
-    }
-
-    delete[] g;
     return 0;
 }

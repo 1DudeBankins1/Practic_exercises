@@ -2,10 +2,8 @@
 #define MAIN_H
 
 #include <iostream>
-#include "func.h"
+#include "func.cpp"
 
 using namespace std;
-
-
 
 #endif // MAIN_H
