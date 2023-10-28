@@ -5,4 +5,4 @@ project(Dimka LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-add_executable(Dimka main.cpp main.h func.cpp func.h)
+add_executable(Dimka main.cpp func.h)
