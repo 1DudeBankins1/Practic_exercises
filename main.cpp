@@ -1,27 +1,29 @@
-#include "func.h"
-#include "Bank_bill.h"
+#include "golf.h"
 #include <iostream>
 
 using namespace std;
 
 int main(int argc, char* argv[])
 {
-    Bank_Bill mine("Dmitry", "88005553555", 20000.0);
-    Bank_Bill maxs("Maxim", "99336342177");
-    Bank_Bill bomj;
+    int n = 0;
 
-    mine.show();
-    maxs.show();
-    bomj.show();
+        std::cout << "Enter the number of the handicaps:";
+        std::cin >> n;
+        std::cin.get();
+        Golf* g = new Golf[n];
+        int i = 0;
+        while (i < n){
+            g[i].showgolf();
+            i++;
+        }
 
-    mine.invest(35000.0);
-    maxs.invest(350.0);
-    maxs.withdraw(200.5);
-    bomj.invest(1000);
+        if (i > 0){
+            g[0].set_handicap(26);
+            g[0].showgolf();
+        }
 
-    mine.show();
-    maxs.show();
-    bomj.show();
+        delete[] g;
+        return 0;
 
     return 0;
 }
