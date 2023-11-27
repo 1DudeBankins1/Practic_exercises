@@ -1,29 +1,40 @@
-#include "golf.h"
+#include "stack.h"
 #include <iostream>
+#include <cctype>
 
 using namespace std;
 
 int main(int argc, char* argv[])
 {
-    int n = 0;
+    Stack st;
+    char c;
+    customer cust;
+    std::cout << "Enter A to add a customer, D to delete a customer, Q to quit\n";
 
-        std::cout << "Enter the number of the handicaps:";
-        std::cin >> n;
-        std::cin.get();
-        Golf* g = new Golf[n];
-        int i = 0;
-        while (i < n){
-            g[i].showgolf();
-            i++;
+    while ((std::cin >> c) && (toupper(c) != 'Q')){
+        while(std::cin.get() != '\n')
+            continue;
+        if (!isalpha(c)){
+            std::cout << "Retry!\a";
+            continue;
         }
-
-        if (i > 0){
-            g[0].set_handicap(26);
-            g[0].showgolf();
+        switch (c){
+            case 'a': case 'A':
+            {
+                cust = create_cust();
+                if (!st.pushback(cust))
+                    continue;
+                break;
+            }
+            case 'd': case 'D':
+            {
+                if(!st.popback(cust))
+                    continue;
+                break;
+            }
         }
-
-        delete[] g;
-        return 0;
-
+        std::cout << "Enter A to add a customer, D to delete a customer, Q to quit\n";
+    }
+    std::cout << "Quit" << std::endl;
     return 0;
 }
