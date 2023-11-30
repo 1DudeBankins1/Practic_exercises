@@ -1,31 +1,19 @@
-#include "move.h"
+#include "plorg.h"
 #include <iostream>
-#include <cctype>
-
-using namespace std;
 
 int main(int argc, char* argv[])
 {
+    Plorg plorg_1("Dimasik", 100);
+    plorg_1.show();
 
-    Move m_1(25, 36.6);
-    Move m_2(17.5, 284);
+    Plorg plorg_2("Max", 60);
+    plorg_2.show();
 
-    std::cout << "m_1 = " << std::endl;
-    m_1.showmore();
+    Plorg plorg_3;
+    plorg_3.show();
 
-    std::cout << "m_2 = " << std::endl;
-    m_2.showmore();
+    plorg_2.set_ci(80);
+    plorg_2.show();
 
-    Move m_3 = m_2.add(m_1);
-    std::cout << "m_3 = m_2 add m_1:" << std::endl;
-    m_3.showmore();
-
-    std::cout << "m_2 reset = " << std::endl;
-    m_2.reset(10,10);
-    m_2.showmore();
-
-    std::cout << "m_3 add m_2:" << std::endl;
-    Move m_4 = m_3.add(m_2);
-    m_4.showmore();
     return 0;
 }
