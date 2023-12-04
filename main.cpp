@@ -1,19 +1,47 @@
-#include "plorg.h"
-#include <iostream>
+#include "list.h"
+
+void add_loud(Item& it);
 
 int main(int argc, char* argv[])
 {
-    Plorg plorg_1("Dimasik", 100);
-    plorg_1.show();
+    List some;
 
-    Plorg plorg_2("Max", 60);
-    plorg_2.show();
+    Item phrase[] =
+    {
+        "Black Sabbath",
+        "Led Zeppelin",
+        "Deep Purple",
+        "Uriah Heep",
+        "Pink Floyd",
+        "Iron Maiden",
+        "Judas Priest"
+    };
 
-    Plorg plorg_3;
-    plorg_3.show();
+    int size = sizeof(phrase)/sizeof(phrase[0]);
 
-    plorg_2.set_ci(80);
-    plorg_2.show();
+    if (some.is_empty())
+        for (int i = 0; i < size; ++i)
+            some.add(phrase[i]);
+
+    some.show_list();
+
+    std::string str;
+    while (!some.is_full())
+    {
+        std::cout << "Enter your string and it will be added to list: ";
+        getline(std::cin, str);
+        some.add(str);
+    }
+
+    some.show_list();
+    some.visit(add_loud);
+    some.show_list();
 
     return 0;
+
+}
+
+void add_loud(Item& it)
+{
+    it += "!!!";
 }
