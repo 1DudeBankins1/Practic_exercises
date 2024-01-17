@@ -26,6 +26,12 @@ public:
     Stonewt operator+(const Stonewt& st) const;
     Stonewt operator-(const Stonewt& st) const;
     Stonewt operator*(double n) const;
+    bool operator<(const Stonewt& st) const;
+    bool operator>(const Stonewt& st) const;
+    bool operator==(const Stonewt& st) const;
+    bool operator<(const double n) const;
+    bool operator>(const double n) const;
+    bool operator==(const double n) const;
 
     friend Stonewt operator*(double n, const Stonewt& st);
     friend std::ostream& operator<<(std::ostream& os, const Stonewt& st);

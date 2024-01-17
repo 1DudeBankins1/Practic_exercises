@@ -72,6 +72,36 @@ Stonewt Stonewt::operator*(double n) const
     return Stonewt(pounds * n);
 }
 
+bool Stonewt::operator<(const Stonewt& st) const
+{
+    return (pounds < st.pounds);
+}
+
+bool Stonewt::operator>(const Stonewt& st) const
+{
+    return (pounds > st.pounds);
+}
+
+bool Stonewt::operator==(const Stonewt& st) const
+{
+    return (pounds == st.pounds);
+}
+
+bool Stonewt::operator<(const double n) const
+{
+    return (pounds < n);
+}
+
+bool Stonewt::operator>(const double n) const
+{
+    return (pounds > n);
+}
+
+bool Stonewt::operator==(const double n) const
+{
+    return (pounds == n);
+}
+
 Stonewt operator*(double n, const Stonewt &v)
 {
     return (v * n);
