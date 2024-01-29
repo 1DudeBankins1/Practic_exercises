@@ -1,29 +1,25 @@
 #include <iostream>
-#include <ctime>
 #include <cstdlib>
-#include "../headers/complex0.h"
-
-const int STNUM = 6;
+#include "../headers/cow.h"
 
 int main(int argc, char* argv[])
 {
-    srand(time(NULL));
+    Cow cow_1;
+    std::cout << "cow №1\n";
+    cow_1.ShowCow();
+    Cow cow_2("Murka", "Eating grass", 455.7);
+    Cow cow_3("Milf", "Milking", 501.2);
+    Cow cow_4(cow_2);
+    cow_1 = cow_3;
 
-    Complex0 x(10, 5);
-    Complex0 y;
-    std::cout << "Enter the complex number, q to quit:\n";
+    std::cout << "cow №1 = cow №3\n";
+    cow_1.ShowCow();
+    std::cout << "cow №2\n";
+    cow_2.ShowCow();
+    std::cout << "cow №3\n";
+    cow_3.ShowCow();
+    std::cout << "cow №4 = cow №2\n";
+    cow_4.ShowCow();
 
-    while (std::cin >> y)
-    {
-        std::cout << "y = " << y << std::endl;
-        std::cout << "complex conjugate is " << ~y << std::endl;
-        std::cout << "x + y is " << x + y << std::endl;
-        std::cout << "x - y is " << x - y << std::endl;
-        std::cout << "x * y is " << x * y << std::endl;
-        std::cout << "5 * y is " << 5 * y << std::endl;
-
-        std::cout << "Enter the complex number, q to quit:\n";
-    }
-    std::cout << "Bye!\n";
     return 0;
 }
