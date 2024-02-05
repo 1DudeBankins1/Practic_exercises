@@ -1,25 +1,45 @@
 #include <iostream>
 #include <cstdlib>
-#include "../headers/cow.h"
+#include "../headers/strings.h"
 
 int main(int argc, char* argv[])
 {
-    Cow cow_1;
-    std::cout << "cow №1\n";
-    cow_1.ShowCow();
-    Cow cow_2("Murka", "Eating grass", 455.7);
-    Cow cow_3("Milf", "Milking", 501.2);
-    Cow cow_4(cow_2);
-    cow_1 = cow_3;
-
-    std::cout << "cow №1 = cow №3\n";
-    cow_1.ShowCow();
-    std::cout << "cow №2\n";
-    cow_2.ShowCow();
-    std::cout << "cow №3\n";
-    cow_3.ShowCow();
-    std::cout << "cow №4 = cow №2\n";
-    cow_4.ShowCow();
-
+    Strings s1(" and I am a C++ student.");
+    Strings s2 = "Please enter your name: ";
+    Strings s3;
+    std::cout << s2;
+    std::cin >> s3;
+    s2 = "My name is " + s3;
+    std::cout << s2 << ".\n";
+    s2 = s2 + s1;
+    s2.stringup();
+    std::cout << "The string\n" << s2
+              << "\ncontains " << s2.has('A')
+              << " 'A' characters in it.\n";
+    s1 = "red";
+    Strings rgb[3] = {Strings(s1), Strings("green"),
+                     Strings("blue")};
+    std::cout << "Enter the name of a primary "
+                 "color for mixing light: ";
+    Strings ans;
+    bool success = false;
+    while(std::cin >> ans)
+    {
+        ans.stringlow();
+        for (int i = 0; i < 3; i++)
+        {
+            if (ans == rgb[i])
+            {
+                std::cout << "That's right!\n";
+                success = true;
+                break;
+            }
+        }
+        if (success)
+            break;
+        else
+            std::cout << "Try again!\n";
+    }
+    std::cout << "Bye\n";
     return 0;
 }
