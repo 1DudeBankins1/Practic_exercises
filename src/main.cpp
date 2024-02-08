@@ -1,45 +1,29 @@
 #include <iostream>
 #include <cstdlib>
-#include "../headers/strings.h"
+#include "../headers/stock.h"
+
+const int STKS = 4;
 
 int main(int argc, char* argv[])
 {
-    Strings s1(" and I am a C++ student.");
-    Strings s2 = "Please enter your name: ";
-    Strings s3;
-    std::cout << s2;
-    std::cin >> s3;
-    s2 = "My name is " + s3;
-    std::cout << s2 << ".\n";
-    s2 = s2 + s1;
-    s2.stringup();
-    std::cout << "The string\n" << s2
-              << "\ncontains " << s2.has('A')
-              << " 'A' characters in it.\n";
-    s1 = "red";
-    Strings rgb[3] = {Strings(s1), Strings("green"),
-                     Strings("blue")};
-    std::cout << "Enter the name of a primary "
-                 "color for mixing light: ";
-    Strings ans;
-    bool success = false;
-    while(std::cin >> ans)
-    {
-        ans.stringlow();
-        for (int i = 0; i < 3; i++)
-        {
-            if (ans == rgb[i])
-            {
-                std::cout << "That's right!\n";
-                success = true;
-                break;
-            }
-        }
-        if (success)
-            break;
-        else
-            std::cout << "Try again!\n";
-    }
-    std::cout << "Bye\n";
+    Stock stocks[STKS] = {
+        Stock("NanoSmart", 12, 20.0),
+        Stock("Boffo Objects", 200, 2.0),
+        Stock("Monolitic Obelisks", 130, 3.25),
+        Stock("Fleep Interprices", 60, 6.5)
+    };
+
+    std::cout.precision(2);
+    std::cout.setf(std::ios_base::fixed, std::ios_base::floatfield);
+    std::cout.setf(std::ios_base::showpoint);
+    std::cout << "Stock holdings:\n";
+    int st;
+    for (st = 0; st < STKS; ++st)
+        std::cout << stocks[st];
+    Stock top = stocks[0];
+    for (st = 1; st < STKS; ++st)
+        top = top.topval(stocks[st]);
+    std::cout << "Most valuable holding:\n";
+    std::cout << top;
     return 0;
 }
