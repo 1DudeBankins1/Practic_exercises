@@ -1,29 +1,36 @@
 #include <iostream>
 #include <cstdlib>
-#include "../headers/stock.h"
+#include "../headers/stack.h"
 
-const int STKS = 4;
+const int CUST_NUM = 5;
 
 int main(int argc, char* argv[])
 {
-    Stock stocks[STKS] = {
-        Stock("NanoSmart", 12, 20.0),
-        Stock("Boffo Objects", 200, 2.0),
-        Stock("Monolitic Obelisks", 130, 3.25),
-        Stock("Fleep Interprices", 60, 6.5)
-    };
+    Item custs[CUST_NUM];
 
-    std::cout.precision(2);
-    std::cout.setf(std::ios_base::fixed, std::ios_base::floatfield);
-    std::cout.setf(std::ios_base::showpoint);
-    std::cout << "Stock holdings:\n";
-    int st;
-    for (st = 0; st < STKS; ++st)
-        std::cout << stocks[st];
-    Stock top = stocks[0];
-    for (st = 1; st < STKS; ++st)
-        top = top.topval(stocks[st]);
-    std::cout << "Most valuable holding:\n";
-    std::cout << top;
+    for (int i = 0; i < CUST_NUM; i++)
+        custs[i] = create_cust();
+
+    Stack st1(CUST_NUM);
+    for (int i = 0; i < CUST_NUM; i++)
+        st1.push(custs[i]);
+    st1.push(custs[0]);
+    std::cout << st1;
+
+    Stack st2(st1);
+    std::cout << st2;
+    Item popped;
+    for (int i = 0; i < 2; i++){
+        st2.pop(popped);
+        std::cout << popped.fullname << " is popped\n";
+    }
+    std::cout << st2;
+
+    Stack st3;
+    st3.push(create_cust());
+    std::cout << st3;
+    st3 = st2;
+    std::cout << st3;
+
     return 0;
 }
