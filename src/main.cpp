@@ -1,36 +1,77 @@
 #include <iostream>
 #include <cstdlib>
-#include "../headers/stack.h"
+#include<ctime>
+#include "../headers/queue.h"
 
-const int CUST_NUM = 5;
+const int MIN_PER_HOUR = 60;
 
 int main(int argc, char* argv[])
 {
-    Item custs[CUST_NUM];
+    srand(time(NULL));
 
-    for (int i = 0; i < CUST_NUM; i++)
-        custs[i] = create_cust();
+    std::cout << "Bank of Heather\n";
+    std::cout << "Enter maximum size of queue: ";
+    int qs;
+    std::cin >> qs;
 
-    Stack st1(CUST_NUM);
-    for (int i = 0; i < CUST_NUM; i++)
-        st1.push(custs[i]);
-    st1.push(custs[0]);
-    std::cout << st1;
+    Queue line(qs);
+    std::cout << "Enter the number of simulation hours: ";
+    int hours;
+    std::cin >> hours;
+    long cyclelimit = MIN_PER_HOUR * hours;
+    std::cout << "Enter the average number of customers per hour: ";
+    double cust_per_hour;
+    std::cin >> cust_per_hour;
+    double min_per_cust = MIN_PER_HOUR / cust_per_hour;
 
-    Stack st2(st1);
-    std::cout << st2;
-    Item popped;
-    for (int i = 0; i < 2; i++){
-        st2.pop(popped);
-        std::cout << popped.fullname << " is popped\n";
+    Item cust;
+    long turnaways = 0; //ушедших клиентов от полной очереди
+    long customers = 0; //присоединений к очереди
+    long served = 0;    //обслуженных клиентов
+    long sum_line = 0;  //совокупная длина очереди
+    int wait_time = 0;  //период времени когда автоотвечтик свободен
+    long line_wait = 0; //общее время в линии
+
+    for (int cycle = 0; cycle < cyclelimit; cycle++)
+    {
+        if (new_customer(min_per_cust))
+        {
+            if (line.isFull())
+                turnaways++;
+            else
+            {
+                customers++;
+                cust.set(cycle);
+                line.enQueue(cust);
+            }
+        }
+        if (wait_time <= 0 && !line.isEmpty())
+        {
+           line.deQueue(cust);
+           wait_time = cust.ptime();
+           line_wait += cycle - cust.when();
+           served++;
+        }
+        if(wait_time > 0)
+            wait_time--;
+        sum_line += line.queue_count();
     }
-    std::cout << st2;
 
-    Stack st3;
-    st3.push(create_cust());
-    std::cout << st3;
-    st3 = st2;
-    std::cout << st3;
+    if(customers > 0)
+    {
+        std::cout << "\ncustomers accepted: " << customers << std::endl;
+        std::cout << "customers served: " << served << std::endl;
+        std::cout << "customers turnaways: " << turnaways << std::endl;
+        std::cout << "average queue size: ";
+        std::cout.precision(2);
+        std::cout.setf(std::ios_base::fixed, std::ios_base::floatfield);
+        std::cout.setf(std::ios_base::showpoint);
+        std::cout << (double)sum_line / cyclelimit << std::endl;
+        std::cout << "average line wait time: ";
+        std::cout << (double)line_wait / served << std::endl;
+    }
+    else
+        std::cout << "No customers!" << std::endl;
 
     return 0;
 }
