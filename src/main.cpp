@@ -13,8 +13,9 @@ int main(int argc, char* argv[])
     std::cout << "Enter maximum size of queue: ";
     int qs;
     std::cin >> qs;
+    Queue line_1(qs);
+    Queue line_2(qs);
 
-    Queue line(qs);
     std::cout << "Enter the number of simulation hours: ";
     int hours;
     std::cin >> hours;
@@ -29,32 +30,45 @@ int main(int argc, char* argv[])
     long customers = 0; //присоединений к очереди
     long served = 0;    //обслуженных клиентов
     long sum_line = 0;  //совокупная длина очереди
-    int wait_time = 0;  //период времени когда автоотвечтик свободен
+    int wait_time_1 = 0;  //период времени когда первый автоотвечтик свободен
+    int wait_time_2 = 0;  //период времени когда первый автоотвечтик свободен
     long line_wait = 0; //общее время в линии
 
     for (int cycle = 0; cycle < cyclelimit; cycle++)
     {
         if (new_customer(min_per_cust))
         {
-            if (line.isFull())
+            if (line_1.isFull() && line_2.isFull())
                 turnaways++;
             else
             {
                 customers++;
                 cust.set(cycle);
-                line.enQueue(cust);
+                if(line_1.queue_count() < line_2.queue_count())
+                    line_1.enQueue(cust);
+                else
+                    line_2.enQueue(cust);
             }
         }
-        if (wait_time <= 0 && !line.isEmpty())
+        if (wait_time_1 <= 0 && !line_1.isEmpty())
         {
-           line.deQueue(cust);
-           wait_time = cust.ptime();
+           line_1.deQueue(cust);
+           wait_time_1 = cust.ptime();
            line_wait += cycle - cust.when();
            served++;
         }
-        if(wait_time > 0)
-            wait_time--;
-        sum_line += line.queue_count();
+        if (wait_time_2 <= 0 && !line_2.isEmpty())
+        {
+           line_2.deQueue(cust);
+           wait_time_2 = cust.ptime();
+           line_wait += cycle - cust.when();
+           served++;
+        }
+        if(wait_time_1 > 0)
+            wait_time_1--;
+        if(wait_time_2 > 0)
+            wait_time_2--;
+        sum_line += line_1.queue_count() + line_2.queue_count();
     }
 
     if(customers > 0)
