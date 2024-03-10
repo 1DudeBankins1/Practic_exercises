@@ -4,8 +4,8 @@
 class Cd
 {
 private:
-    char performers[50];
-    char label[20];
+    char* performers;
+    char* label;
     int selections;
     double playtime;
 

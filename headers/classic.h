@@ -1,12 +1,12 @@
 #ifndef CLASSIC_H
 #define CLASSIC_H
 
-#include"cd.h"
+#include "cd.h"
 
 class Classic : public Cd
 {
 private:
-    char main_task[40];
+    char* main_task;
 public:
     Classic(char* mt, char* s1, char* s2, int n, double x);
     Classic(const Classic& c);
