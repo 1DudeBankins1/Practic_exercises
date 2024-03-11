@@ -1,36 +1,46 @@
 #include <iostream>
-#include "../headers/classic.h"
+#include "../headers/overdrft.h"
 
-void bravo(const Cd& disk);
+const int ASIZE = 3;
+const int MAX = 35;
 
-int main(int argc, char* argv[])
+inline void EatLine() {while (std::cin.get() != '\n') continue;}
+
+int main()
 {
-    Cd c1((char*)"Beatles", (char*)"Capitol", 14, 35.5);
-    Classic c2 = Classic((char*)"Piano Sonata in B flat, Fantasia in C",
-                         (char*)"Alfred Brendel", (char*)"Philips", 2, 57.17);
-    Cd *pcd = &c1;
+    Bank * baps[ASIZE] ;
+    char name[MAX] ;
+    long acctNum;
+    double balance;
+    int acctType;
+    int i;
 
-    std::cout << "Using object directly:\n";
-    c1.report();
-    c2.report();
+    for (i = 0; i < ASIZE; i++)
+    {
+        std::cout << "Enter client’s name: ";
+        std::cin.get(name ,MAX);
+        EatLine() ;
+        std::cout << "Enter client's account number: ";
+        std::cin >> acctNum;
+        std::cout << "Enter client’s initial balance: ";
+        std::cin >> balance;
+        std::cout << "Enter 1 for Brass Account, 2 for Brass Plus " << "Account: ";
+        std::cin >> acctType;
+        EatLine();
+        if (acctType == 2) baps[i] = new OverDraft(name, acctNum, balance);
+        else
+        {
+            baps[i] = new BankAccount(name, acctNum, balance);
+            if (acctType != 1) std::cout << "I/1l interpret that as a 1.\n";
+        }
+    }
 
-    std::cout << "\nUsing type cd* pointer to objects:\n";
-    pcd->report();
-    pcd = &c2;
-    pcd->report();
+    for (i = 0; i < ASIZE; i++)
+    {
+        baps[i]->ViewAcct();
+        std::cout << std::endl;
+    }
 
-    std::cout << "\nCalling a function with a Cd reference argument:\n";
-    bravo(c1);
-    bravo(c2);
-
-    std::cout << "\nTesting assigments:\n";
-    Classic copy = c2;
-    copy.report();
-
+    std::cout << "Bye!\n";
     return 0;
-}
-
-void bravo(const Cd& disk)
-{
-    disk.report();
 }

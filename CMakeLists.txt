@@ -5,4 +5,4 @@ project(Dimka LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-add_executable(Dimka ./src/main.cpp ./headers/cd.h ./src/cd.cpp ./headers/classic.h ./src/classic.cpp)
+add_executable(Dimka ./src/main.cpp ./headers/bankaccnt.h ./src/bankaccnt.cpp ./headers/overdrft.h ./src/overdrft.cpp)
