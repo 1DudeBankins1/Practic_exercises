@@ -1,34 +1,30 @@
 #include <iostream>
-#include "../headers/vintageport.h"
+#include "../headers/wine.h"
 
 int main()
 {
-    Port george("Lihni", "Red Sweet", 10);
-    VintagePort fran("Shardone", 5, "Vikky", 1956);
-    Port germ(george);
-    VintagePort portwein;
-    portwein = fran;
+    ArrayDb buf[2];
+    buf[0] = ArrayDb(2, 56.6);
+    buf[1] = ArrayDb(4, 23.5);
 
-    george.Show();
-    fran.Show();
-    std::cout << germ;
-    std::cout << portwein;
+    std::cout << buf[0];
+    std::cout << buf[1];
 
-    std::cout << std::endl;
+    int wine_num;
+    std::cout << "Enter the number of wines: ";
+    std::cin >> wine_num;
+    while (std::cin.get() != '\n') continue;
 
-    Port* wrio;
-    wrio = &germ;
-    *wrio += 50;
-    wrio->Show();
+    Wine* wines = new Wine[wine_num];
 
-    wrio = &portwein;
-    *wrio -= 3;
-    std::cout << *wrio;
+    for (int i = 0; i < wine_num; ++i){
+        std::cin >> wines[i];
+    }
 
-    VintagePort* lah;
-    lah = &portwein;
-    *lah -= 1;
-    std::cout << *lah;
+    for (int i = 0; i < wine_num; ++i){
+        std::cout << wines[i];
+    }
 
+    delete[] wines;
     return 0;
 }
