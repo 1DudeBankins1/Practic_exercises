@@ -1,30 +1,53 @@
 #include <iostream>
-#include "../headers/wine.h"
+#include <cstring>
+#include "../headers/queueTp.h"
+#include "../headers/workermi.h"
+
+const int SIZE = 5;
 
 int main()
 {
-    ArrayDb buf[2];
-    buf[0] = ArrayDb(2, 56.6);
-    buf[1] = ArrayDb(4, 23.5);
-
-    std::cout << buf[0];
-    std::cout << buf[1];
-
-    int wine_num;
-    std::cout << "Enter the number of wines: ";
-    std::cin >> wine_num;
-    while (std::cin.get() != '\n') continue;
-
-    Wine* wines = new Wine[wine_num];
-
-    for (int i = 0; i < wine_num; ++i){
-        std::cin >> wines[i];
+    Queue<Worker*> dmitrys;
+    int ct;
+    for(ct = 0; ct < SIZE; ++ct)
+    {
+        char choice;
+        std::cout << "Enter the employee category: \n w: waiter s: singer t: singing waiter q: quit\n";
+        std::cin >> choice;
+        while (strchr("wstq", choice) == NULL)
+        {
+             std::cout << "Please enter w, s, t or q: ";
+             std::cin >> choice;
+        }
+        if (choice == 'q')
+            break;
+        switch (choice){
+            case 'w': {
+                dmitrys.enQueue(new Waiter);
+                break;
+            }
+            case 's': {
+                dmitrys.enQueue(new Singer);
+                break;
+            }
+            case 't': {
+                dmitrys.enQueue(new SingingWaiter);
+                break;
+            }
+        }
+        std::cin.get();
+        dmitrys.current()->set();
     }
 
-    for (int i = 0; i < wine_num; ++i){
-        std::cout << wines[i];
+    std::cout << "\nHere's your staff:\n";
+    for(int i = 0; i < ct; ++i)
+    {
+        Worker* tempw;
+        dmitrys.deQueue(tempw);
+        tempw->show();
     }
+    if (dmitrys.isEmpty())
+        std::cout << "Your staff completed!\n";
 
-    delete[] wines;
     return 0;
 }
