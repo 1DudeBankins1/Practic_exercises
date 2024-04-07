@@ -1,52 +1,52 @@
 #include <iostream>
 #include <cstring>
+#include "../headers/baddude.h"
 #include "../headers/queueTp.h"
-#include "../headers/workermi.h"
 
 const int SIZE = 5;
 
 int main()
 {
-    Queue<Worker*> dmitrys;
+    Queue<Person*> dmitry_band;
     int ct;
     for(ct = 0; ct < SIZE; ++ct)
     {
         char choice;
-        std::cout << "Enter the employee category: \n w: waiter s: singer t: singing waiter q: quit\n";
+        std::cout << "Enter the guy category: \n g: gunslinger p: Poker player b: Bad dude q: quit\n";
         std::cin >> choice;
-        while (strchr("wstq", choice) == NULL)
+        while (strchr("gpbq", choice) == NULL)
         {
-             std::cout << "Please enter w, s, t or q: ";
+             std::cout << "Please enter g, p, b or q: ";
              std::cin >> choice;
         }
         if (choice == 'q')
             break;
         switch (choice){
-            case 'w': {
-                dmitrys.enQueue(new Waiter);
+            case 'g': {
+                dmitry_band.enQueue(new Gunslinger);
                 break;
             }
-            case 's': {
-                dmitrys.enQueue(new Singer);
+            case 'p': {
+                dmitry_band.enQueue(new PokerPlayer);
                 break;
             }
-            case 't': {
-                dmitrys.enQueue(new SingingWaiter);
+            case 'b': {
+                dmitry_band.enQueue(new BadDude);
                 break;
             }
         }
         std::cin.get();
-        dmitrys.current()->set();
+        dmitry_band.current()->Set();
     }
 
     std::cout << "\nHere's your staff:\n";
     for(int i = 0; i < ct; ++i)
     {
-        Worker* tempw;
-        dmitrys.deQueue(tempw);
-        tempw->show();
+        Person* tempw;
+        dmitry_band.deQueue(tempw);
+        tempw->Show();
     }
-    if (dmitrys.isEmpty())
+    if (dmitry_band.isEmpty())
         std::cout << "Your staff completed!\n";
 
     return 0;
