@@ -1,53 +1,45 @@
 #include <iostream>
 #include <cstring>
-#include "../headers/baddude.h"
-#include "../headers/queueTp.h"
+#include "../headers/emp.h"
 
 const int SIZE = 5;
 
 int main()
 {
-    Queue<Person*> dmitry_band;
-    int ct;
-    for(ct = 0; ct < SIZE; ++ct)
-    {
-        char choice;
-        std::cout << "Enter the guy category: \n g: gunslinger p: Poker player b: Bad dude q: quit\n";
-        std::cin >> choice;
-        while (strchr("gpbq", choice) == NULL)
-        {
-             std::cout << "Please enter g, p, b or q: ";
-             std::cin >> choice;
-        }
-        if (choice == 'q')
-            break;
-        switch (choice){
-            case 'g': {
-                dmitry_band.enQueue(new Gunslinger);
-                break;
-            }
-            case 'p': {
-                dmitry_band.enQueue(new PokerPlayer);
-                break;
-            }
-            case 'b': {
-                dmitry_band.enQueue(new BadDude);
-                break;
-            }
-        }
-        std::cin.get();
-        dmitry_band.current()->Set();
-    }
+    Employee th("Trip", "Harris", "Thumper");
+    std::cout << th;
+    th.show_all();
 
-    std::cout << "\nHere's your staff:\n";
-    for(int i = 0; i < ct; ++i)
-    {
-        Person* tempw;
-        dmitry_band.deQueue(tempw);
-        tempw->Show();
-    }
-    if (dmitry_band.isEmpty())
-        std::cout << "Your staff completed!\n";
+    Manager db("Debbie", "Bolt", "Twigger", 5);
+    std::cout << db;
+    db.show_all();
+
+    Fink mo("Matt", "Oggs", "Oiler", "Debbie Bolt");
+    std::cout << mo;
+    mo.show_all();
+
+    Highfink hf(db, "Curly Kew");
+    std::cout << hf;
+    hf.show_all();
+
+    std::cout << "Using an employee * pointer:\n";
+    Employee *tri[4] = {&th, &db, &mo, &hf};
+    for (int i = 0; i < 4; ++i)
+        tri[i]->show_all();
+
+    std::cin.get();
+
+    Employee th_2;
+    th_2.set_all();
+    Manager db_2;
+    db_2.set_all();
+    Fink mo_2;
+    mo_2.set_all();
+    Highfink hf_2;
+    hf_2.set_all();
+    Employee *tri_2[4] = {&th_2, &db_2, &mo_2, &hf_2};
+    for (int i = 0; i < 4; ++i)
+        tri_2[i]->show_all();
 
     return 0;
 }
