@@ -1,45 +1,35 @@
 #include <iostream>
 #include <cstring>
-#include "../headers/emp.h"
+#include "../headers/tv.h"
 
 const int SIZE = 5;
 
 int main()
 {
-    Employee th("Trip", "Harris", "Thumper");
-    std::cout << th;
-    th.show_all();
+    Tv Samsung;
+    std::cout << "Initial settings for Samsung:\n";
+    Samsung.settings();
+    Samsung.onoff();
+    Samsung.chanup();
+    std::cout << "\nAdjusted settings for Samsung:\n";
+    Samsung.settings();
 
-    Manager db("Debbie", "Bolt", "Twigger", 5);
-    std::cout << db;
-    db.show_all();
+    Remote Philips;
+    Philips.set_chan(Samsung, 9);
+    Philips.volup(Samsung);
+    Philips.volup(Samsung);
+    Philips.get_control();
+    std::cout << "\nSettings after using remote:\n";
+    Samsung.settings();
 
-    Fink mo("Matt", "Oggs", "Oiler", "Debbie Bolt");
-    std::cout << mo;
-    mo.show_all();
+    Tv LG(Tv::On);
+    LG.set_mode();
+    Philips.set_chan(LG, 69);
+    std::cout << "\nLG settings:\n";
+    LG.settings();
 
-    Highfink hf(db, "Curly Kew");
-    std::cout << hf;
-    hf.show_all();
-
-    std::cout << "Using an employee * pointer:\n";
-    Employee *tri[4] = {&th, &db, &mo, &hf};
-    for (int i = 0; i < 4; ++i)
-        tri[i]->show_all();
-
-    std::cin.get();
-
-    Employee th_2;
-    th_2.set_all();
-    Manager db_2;
-    db_2.set_all();
-    Fink mo_2;
-    mo_2.set_all();
-    Highfink hf_2;
-    hf_2.set_all();
-    Employee *tri_2[4] = {&th_2, &db_2, &mo_2, &hf_2};
-    for (int i = 0; i < 4; ++i)
-        tri_2[i]->show_all();
+    LG.set_control(Philips);
+    Philips.get_control();
 
     return 0;
 }
