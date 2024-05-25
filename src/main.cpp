@@ -1,35 +1,51 @@
 #include <iostream>
-#include <cstring>
-#include "../headers/tv.h"
+#include <cmath>
+#include "../headers/hgexcept.h"
 
-const int SIZE = 5;
+double hmean(double a, double b) throw (hmeanxcept&);
+double gmean(double a, double b) throw (gmeanxcept&);
 
 int main()
 {
-    Tv Samsung;
-    std::cout << "Initial settings for Samsung:\n";
-    Samsung.settings();
-    Samsung.onoff();
-    Samsung.chanup();
-    std::cout << "\nAdjusted settings for Samsung:\n";
-    Samsung.settings();
+    double x, y, z;
+    std::cout << "Enter two numbers: ";
+    while (std::cin >> x >> y)
+    {
+        try {
+        z = hmean(x , y);
+        std::cout << "Harmonic mean of " << x << " and "
+                  << y << " is " << z << std::endl;
+        z = gmean(x , y);
+        std::cout << "Geometric mean of " << x << " and "
+                  << y << " is " << z << std::endl;
+        }
 
-    Remote Philips;
-    Philips.set_chan(Samsung, 9);
-    Philips.volup(Samsung);
-    Philips.volup(Samsung);
-    Philips.get_control();
-    std::cout << "\nSettings after using remote:\n";
-    Samsung.settings();
+        catch (hmeanxcept& hm)
+        {
+            std::cout << hm.what();
+        }
 
-    Tv LG(Tv::On);
-    LG.set_mode();
-    Philips.set_chan(LG, 69);
-    std::cout << "\nLG settings:\n";
-    LG.settings();
-
-    LG.set_control(Philips);
-    Philips.get_control();
-
+        catch (gmeanxcept& gm)
+        {
+            std::cout << gm.what();
+            break;
+        }
+         std::cout << "Please enter new values:\n";
+    }
+    std::cout << "Bye!\n";
     return 0;
+}
+
+double hmean(double a, double b) throw (hmeanxcept&)
+{
+    if(a == -b)
+        throw hmeanxcept();
+    return 2.0 * a * b / (a + b);
+}
+
+double gmean(double a, double b) throw (gmeanxcept&)
+{
+    if(a < 0 || b < 0)
+        throw gmeanxcept();
+    return sqrt(a * b);
 }
