@@ -1,51 +1,50 @@
 #include <iostream>
-#include <cmath>
-#include "../headers/hgexcept.h"
+#include <string>
+#include <cctype>
 
-double hmean(double a, double b) throw (hmeanxcept&);
-double gmean(double a, double b) throw (gmeanxcept&);
+bool isPalindrome(const std::string& st);
 
 int main()
 {
-    double x, y, z;
-    std::cout << "Enter two numbers: ";
-    while (std::cin >> x >> y)
+    std::string str;
+    bool fail = false;
+    std::cout << "Enter the string! Or \"quit\" to quit\n";
+    getline(std::cin, str);
+    while (str != "quit")
     {
-        try {
-        z = hmean(x , y);
-        std::cout << "Harmonic mean of " << x << " and "
-                  << y << " is " << z << std::endl;
-        z = gmean(x , y);
-        std::cout << "Geometric mean of " << x << " and "
-                  << y << " is " << z << std::endl;
+        for (char it : str) {
+            if (!isalpha(it) || isupper(it))
+            {
+                std::cout << "String contains uncorrect symbols, try again!" << '\n';
+                getline(std::cin, str);
+                fail = true;
+                break;
+            }
         }
-
-        catch (hmeanxcept& hm)
-        {
-            std::cout << hm.what();
+        if (fail){
+            fail = false;
+            continue;
         }
-
-        catch (gmeanxcept& gm)
-        {
-            std::cout << gm.what();
-            break;
-        }
-         std::cout << "Please enter new values:\n";
+        if (isPalindrome(str))
+            std::cout << "String is palidrome!\n";
+        else
+            std::cout << "String isn't palidrome!\n";
+        std::cout << "Enter the string! Or \"quit\" to quit\n";
+        getline(std::cin, str);
     }
-    std::cout << "Bye!\n";
+    std::cout << "Bye!" << '\n';
     return 0;
 }
 
-double hmean(double a, double b) throw (hmeanxcept&)
+bool isPalindrome(const std::string& st)
 {
-    if(a == -b)
-        throw hmeanxcept();
-    return 2.0 * a * b / (a + b);
-}
+    size_t sz = st.size();
+    int half = (sz / 2) + 1;
 
-double gmean(double a, double b) throw (gmeanxcept&)
-{
-    if(a < 0 || b < 0)
-        throw gmeanxcept();
-    return sqrt(a * b);
+    for (int i = 0; i < half ; ++i)
+    {
+        if (st.at(i) != st.at(sz-1-i))
+            return false;
+    }
+    return true;
 }
