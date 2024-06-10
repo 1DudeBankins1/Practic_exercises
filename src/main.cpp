@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <cctype>
+#include <algorithm>
 
 bool isPalindrome(const std::string& st);
 
@@ -12,23 +13,15 @@ int main()
     getline(std::cin, str);
     while (str != "quit")
     {
-        for (char it : str) {
-            if (!isalpha(it) || isupper(it))
-            {
-                std::cout << "String contains uncorrect symbols, try again!" << '\n';
-                getline(std::cin, str);
-                fail = true;
-                break;
-            }
-        }
-        if (fail){
-            fail = false;
-            continue;
-        }
-        if (isPalindrome(str))
-            std::cout << "String is palidrome!\n";
+        std::string new_str;
+        for (char it : str)
+            if (isalpha(it))
+                new_str += it;
+        transform(new_str.begin(), new_str.end(), new_str.begin(), tolower);
+        if (isPalindrome(new_str))
+            std::cout << "String \"" << new_str << "\" is palidrome!\n";
         else
-            std::cout << "String isn't palidrome!\n";
+            std::cout << "String \"" << new_str << "\" isn't palidrome!\n";
         std::cout << "Enter the string! Or \"quit\" to quit\n";
         getline(std::cin, str);
     }
