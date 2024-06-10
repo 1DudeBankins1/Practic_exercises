@@ -6,7 +6,8 @@
 #include <vector>
 #include <iterator>
 
-int reduce(long ar[], int n);
+template <typename T>
+int reduce(T ar[], int n);
 
 int main()
 {
@@ -21,15 +22,33 @@ int main()
     std::cout << "Entered vector was:\n";
     std::copy(long_array.begin(), long_array.end(), out);
     std::cout << "\nThe conversion vector has "<< reduce(&long_array[0], long_array.size()) << '\n';
+
+    std::vector<std::string> str_array;
+    std::string str;
+    std::ostream_iterator<std::string> s_out(std::cout, " ");
+    std::cout << "Enter the strings! Or \"quit\" to quit\n";
+    std::cin.clear();
+    std::cin.get();
+    std::cin.get();
+    getline(std::cin, str);
+    while (str != "quit")
+    {
+        str_array.push_back(str);
+        getline(std::cin, str);
+    }
+    std::cout << "Entered strings was:\n";
+    std::copy(str_array.begin(), str_array.end(), s_out);
+    std::cout << "\nThe conversion vector has "<< reduce(&str_array[0], str_array.size()) << '\n';
     return 0;
 }
 
-int reduce(long ar[], int n)
+template <typename T>
+int reduce(T ar[], int n)
 {
-    std::set<long> s;
-    std::copy(ar, ar + n, std::insert_iterator<std::set<long>>(s, s.begin()));
+    std::set<T> s;
+    std::copy(ar, ar + n, std::insert_iterator<std::set<T>>(s, s.begin()));
     std::cout << "\n";
-    std::copy(s.begin(), s.end(), std::ostream_iterator<long> (std::cout, " "));
+    std::copy(s.begin(), s.end(), std::ostream_iterator<T> (std::cout, " "));
     std::cout << "\n";
     return s.size();
 }
