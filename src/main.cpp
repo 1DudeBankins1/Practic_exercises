@@ -1,54 +1,79 @@
 #include <iostream>
-#include <string>
-#include <cctype>
-#include <algorithm>
-#include <set>
-#include <vector>
-#include <iterator>
+#include <cstdlib>
+#include <ctime>
+#include <queue>
+#include "../headers/queue.h"
 
-template <typename T>
-int reduce(T ar[], int n);
+const int MIN_PER_HOUR = 60;
 
-int main()
+int main(int argc, char* argv[])
 {
-    std::vector<long> long_array;
-    long num;
-    std::ostream_iterator<long> out(std::cout, " ");
-    std::cout << "Enter the numbers! Or \"quit\" to quit\n";
-    while (std::cin >> num)
-    {
-        long_array.push_back(num);
-    }
-    std::cout << "Entered vector was:\n";
-    std::copy(long_array.begin(), long_array.end(), out);
-    std::cout << "\nThe conversion vector has "<< reduce(&long_array[0], long_array.size()) << '\n';
+    srand(time(NULL));
 
-    std::vector<std::string> str_array;
-    std::string str;
-    std::ostream_iterator<std::string> s_out(std::cout, " ");
-    std::cout << "Enter the strings! Or \"quit\" to quit\n";
-    std::cin.clear();
-    std::cin.get();
-    std::cin.get();
-    getline(std::cin, str);
-    while (str != "quit")
+    std::cout << "Bank of Heather\n";
+    std::cout << "Enter maximum size of queue: ";
+    int max_line;
+    std::cin >> max_line;
+
+    std::queue<Item> line;
+    std::cout << "Enter the number of simulation hours: ";
+    int hours;
+    std::cin >> hours;
+    long cyclelimit = MIN_PER_HOUR * hours;
+    std::cout << "Enter the average number of customers per hour: ";
+    double cust_per_hour;
+    std::cin >> cust_per_hour;
+    double min_per_cust = MIN_PER_HOUR / cust_per_hour;
+
+    Item cust;
+    long turnaways = 0; //ушедших клиентов от полной очереди
+    long customers = 0; //присоединений к очереди
+    long served = 0;    //обслуженных клиентов
+    long sum_line = 0;  //совокупная длина очереди
+    int wait_time = 0;  //период времени когда автоотвечтик свободен
+    long line_wait = 0; //общее время в линии
+
+    for (int cycle = 0; cycle < cyclelimit; cycle++)
     {
-        str_array.push_back(str);
-        getline(std::cin, str);
+        if (new_customer(min_per_cust))
+        {
+            if (line.size() == max_line)
+                turnaways++;
+            else
+            {
+                customers++;
+                cust.set(cycle);
+                line.push(cust);
+            }
+        }
+        if (wait_time <= 0 && !line.empty())
+        {
+           cust = line.front();
+           line.pop();
+           wait_time = cust.ptime();
+           line_wait += cycle - cust.when();
+           served++;
+        }
+        if(wait_time > 0)
+            wait_time--;
+        sum_line += line.size();
     }
-    std::cout << "Entered strings was:\n";
-    std::copy(str_array.begin(), str_array.end(), s_out);
-    std::cout << "\nThe conversion vector has "<< reduce(&str_array[0], str_array.size()) << '\n';
+
+    if(customers > 0)
+    {
+        std::cout << "\ncustomers accepted: " << customers << std::endl;
+        std::cout << "customers served: " << served << std::endl;
+        std::cout << "customers turnaways: " << turnaways << std::endl;
+        std::cout << "average queue size: ";
+        std::cout.precision(2);
+        std::cout.setf(std::ios_base::fixed, std::ios_base::floatfield);
+        std::cout.setf(std::ios_base::showpoint);
+        std::cout << (double)sum_line / cyclelimit << std::endl;
+        std::cout << "average line wait time: ";
+        std::cout << (double)line_wait / served << std::endl;
+    }
+    else
+        std::cout << "No customers!" << std::endl;
+
     return 0;
-}
-
-template <typename T>
-int reduce(T ar[], int n)
-{
-    std::set<T> s;
-    std::copy(ar, ar + n, std::insert_iterator<std::set<T>>(s, s.begin()));
-    std::cout << "\n";
-    std::copy(s.begin(), s.end(), std::ostream_iterator<T> (std::cout, " "));
-    std::cout << "\n";
-    return s.size();
 }
