@@ -1,42 +1,42 @@
 #include <iostream>
-#include <cstdlib>
-#include <ctime>
-#include <vector>
 #include <set>
 #include <iterator>
-
-const int MIN_PER_HOUR = 60;
-
-std::vector<int> Lotto(int total, int setted);
+#include <algorithm>
 
 int main(int argc, char* argv[])
 {
-    srand(time(NULL));
-    int total = 0;
-    int setted = 0;
-    std::ostream_iterator<int> out(std::cout, " ");
-    std::cout << "Enter total count of numbers:";
-    std::cin >> total;
-    std::cout << "Enter count of setted numbers:";
-    std::cin >> setted;
-    std::cin.clear();
-    std::cin.get();
-    std::cout << "Got vector:\n";
-    std::vector<int> vec = Lotto(total, setted);
-    std::copy(vec.begin(), vec.end(), out);
-    std::cout << "\n";
-    return 0;
-}
+    std::ostream_iterator<std::string> out(std::cout, " ");
+    std::cout << "Matt, enter your list, enter \"end\" to end:\n";
+    std::set<std::string> matts;
+    std::string temp;
+    getline(std::cin, temp);
+    while(temp != "end")
+    {
+        matts.insert(temp);
+        getline(std::cin, temp);
+    }
 
-std::vector<int> Lotto(int total, int setted)
-{
-    if(setted > total)
-        setted = total;
-    std::set<int> temp;
-    std::vector<int> vec(setted);
-    std::insert_iterator<std::set<int>> it(temp, temp.begin());
-    for(; temp.size() < setted; ++it)
-        it = rand() % total + 1;
-    std::copy(temp.begin(), temp.end(), vec.begin());
-    return vec;
+    std::cout << "Patt, enter your list, enter \"end\" to end:\n";
+    std::set<std::string> patts;
+    getline(std::cin, temp);
+    while(temp != "end")
+    {
+        patts.insert(temp);
+        getline(std::cin, temp);
+    }
+
+    std::set<std::string> united;
+    std::insert_iterator<std::set<std::string>>it(united, united.begin());
+    std::set_union(matts.begin(), matts.end(), patts.begin(), patts.end(), it);
+
+    std::cout << "\nMatt's list: ";
+    std::copy(matts.begin(), matts.end(), out);
+
+    std::cout << "\nPatt's list: ";
+    std::copy(patts.begin(), patts.end(), out);
+
+    std::cout << "\nUnited list: ";
+    std::copy(united.begin(), united.end(), out);
+
+    return 0;
 }
