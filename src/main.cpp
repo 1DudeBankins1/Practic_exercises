@@ -1,42 +1,19 @@
 #include <iostream>
-#include <set>
-#include <iterator>
-#include <algorithm>
+#include <cstring>
 
 int main(int argc, char* argv[])
 {
-    std::ostream_iterator<std::string> out(std::cout, " ");
-    std::cout << "Matt, enter your list, enter \"end\" to end:\n";
-    std::set<std::string> matts;
-    std::string temp;
-    getline(std::cin, temp);
-    while(temp != "end")
-    {
-        matts.insert(temp);
-        getline(std::cin, temp);
-    }
+    std::cout << "Enter the string:\n";
+    char str[40];
 
-    std::cout << "Patt, enter your list, enter \"end\" to end:\n";
-    std::set<std::string> patts;
-    getline(std::cin, temp);
-    while(temp != "end")
-    {
-        patts.insert(temp);
-        getline(std::cin, temp);
-    }
+    std::cin.get(str, 40, '#');
 
-    std::set<std::string> united;
-    std::insert_iterator<std::set<std::string>>it(united, united.begin());
-    std::set_union(matts.begin(), matts.end(), patts.begin(), patts.end(), it);
+    std::cout << "The string has " << strlen(str) << " symbols until #\n";
 
-    std::cout << "\nMatt's list: ";
-    std::copy(matts.begin(), matts.end(), out);
+    std::cout << "And " << (char)std::cin.get() << " left in stream\n";
 
-    std::cout << "\nPatt's list: ";
-    std::copy(patts.begin(), patts.end(), out);
-
-    std::cout << "\nUnited list: ";
-    std::copy(united.begin(), united.end(), out);
+    while (std::cin.get() != '\n')
+        continue;
 
     return 0;
 }
