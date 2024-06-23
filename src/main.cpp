@@ -1,19 +1,33 @@
 #include <iostream>
 #include <cstring>
+#include <fstream>
+
+inline void eatLine(){
+    while (std::cin.get() != '\n') continue;
+}
 
 int main(int argc, char* argv[])
 {
-    std::cout << "Enter the string:\n";
-    char str[40];
+    char fileName[40];
+    std::cout << "Choose the file:\n";
+    std::cin.get(fileName, 40, '\n');
+    eatLine();
+    std::ofstream outFile;
+    outFile.open(fileName);
+    std::cout << "Enter your text:\n";
+    char info[40];
+    while(std::cin.get(info, 40, '\n')){
+        outFile << info << "\n";
+    }
+    outFile.clear();
+    outFile.close();
 
-    std::cin.get(str, 40, '#');
-
-    std::cout << "The string has " << strlen(str) << " symbols until #\n";
-
-    std::cout << "And " << (char)std::cin.get() << " left in stream\n";
-
-    while (std::cin.get() != '\n')
-        continue;
-
+    std::ifstream inFile;
+    inFile.open(fileName);
+    std::cout << "The file " << fileName << " contains:\n";
+    char ch;
+    while((ch = inFile.get()) != EOF){
+        std::cout << ch;
+    }
     return 0;
 }
