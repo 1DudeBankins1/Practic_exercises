@@ -9,15 +9,24 @@ inline void eatLine(){
 int main(int argc, char* argv[])
 {
     char fileName[40];
-    std::cout << "Choose the file for copying:\n";
+    std::cout << "Choose files for concatenating:\n";
     std::cin.get(fileName, 40, '\n');
     eatLine();
-    std::ifstream copyFile;
-    copyFile.open(fileName, std::ios_base::binary | std::ios_base::in);
-    if (!copyFile.is_open()){
+    std::ifstream cFile1;
+    cFile1.open(fileName, std::ios_base::binary | std::ios_base::in);
+    if (!cFile1.is_open()){
         std::cerr << "The file isn't found\n";
         exit(1);
     }
+    std::cin.get(fileName, 40, '\n');
+    eatLine();
+    std::ifstream cFile2;
+    cFile2.open(fileName, std::ios_base::binary | std::ios_base::in);
+    if (!cFile2.is_open()){
+        std::cerr << "The file isn't found\n";
+        exit(1);
+    }
+
     std::cout << "Choose the file for destination:\n";
     std::cin.get(fileName, 40, '\n');
     eatLine();
@@ -27,12 +36,31 @@ int main(int argc, char* argv[])
         std::cerr << "The file isn't found\n";
         exit(1);
     }
+
     char ch;
-    while(copyFile.get(ch)){
-        destFile << ch;
+    while(!cFile1.eof() || !cFile1.eof()){
+        if(!cFile1.eof()){
+            cFile1.get(ch);
+            while(ch != '\n'){
+                destFile << ch;
+                cFile1.get(ch);
+            }
+        }
+        destFile << ' ';
+        if(!cFile2.eof()){
+            cFile2.get(ch);
+            while(ch != '\n'){
+                destFile << ch;
+                cFile2.get(ch);
+            }
+        }
+        destFile << std::endl;
     }
-    copyFile.clear();
-    copyFile.close();
+
+    cFile1.clear();
+    cFile1.close();
+    cFile2.clear();
+    cFile2.close();
     destFile.clear();
     destFile.close();
 
