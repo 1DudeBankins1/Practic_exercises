@@ -9,25 +9,42 @@ inline void eatLine(){
 int main(int argc, char* argv[])
 {
     char fileName[40];
-    std::cout << "Choose the file:\n";
+    std::cout << "Choose the file for copying:\n";
     std::cin.get(fileName, 40, '\n');
     eatLine();
-    std::ofstream outFile;
-    outFile.open(fileName);
-    std::cout << "Enter your text:\n";
-    char info[40];
-    while(std::cin.get(info, 40, '\n')){
-        outFile << info << "\n";
+    std::ifstream copyFile;
+    copyFile.open(fileName, std::ios_base::binary | std::ios_base::in);
+    if (!copyFile.is_open()){
+        std::cerr << "The file isn't found\n";
+        exit(1);
     }
-    outFile.clear();
-    outFile.close();
+    std::cout << "Choose the file for destination:\n";
+    std::cin.get(fileName, 40, '\n');
+    eatLine();
+    std::ofstream destFile;
+    destFile.open(fileName, std::ios_base::binary | std::ios_base::out | std::ios_base::trunc);
+    if (!destFile.is_open()){
+        std::cerr << "The file isn't found\n";
+        exit(1);
+    }
+    char ch;
+    while(copyFile.get(ch)){
+        destFile << ch;
+    }
+    copyFile.clear();
+    copyFile.close();
+    destFile.clear();
+    destFile.close();
 
     std::ifstream inFile;
     inFile.open(fileName);
     std::cout << "The file " << fileName << " contains:\n";
-    char ch;
     while((ch = inFile.get()) != EOF){
         std::cout << ch;
     }
+    std::cout << std::endl;
+    inFile.clear();
+    inFile.close();
+
     return 0;
 }
