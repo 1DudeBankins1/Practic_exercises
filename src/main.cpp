@@ -1,9 +1,13 @@
 #include <iostream>
-#include <string>
+#include <cstring>
 #include <fstream>
 #include <set>
 #include <iterator>
 #include <algorithm>
+#include "../headers/emp.h"
+
+const int SIZE = 5;
+const int FILE_SIZE = 40;
 
 inline void eatLine(){
     while (std::cin.get() != '\n') continue;
@@ -11,83 +15,83 @@ inline void eatLine(){
 
 int main(int argc, char* argv[])
 {
-    std::ostream_iterator<std::string> out(std::cout, " ");
-    std::cout << "Matt, enter your filename:\n";
+    Employee* dmitry_emp[SIZE];
 
-    char fileName[40];
-    std::cin.get(fileName, 40, '\n');
+    char fileName[FILE_SIZE];
+    std::cout << "Choose the file for employee reading:\n";
+    std::cin.get(fileName, FILE_SIZE, '\n');
     eatLine();
-    std::ifstream mattsFile;
-    mattsFile.open(fileName, std::ios_base::in);
-    if (!mattsFile.is_open()){
-        std::cerr << "The file isn't found\n";
-        exit(1);
+    int count;
+    std::ifstream rEmpFile;
+    std::ofstream wrEmpFile;
+    rEmpFile.open(fileName, std::ios_base::in);
+    if (!rEmpFile.is_open()){
+        wrEmpFile.open(fileName);
+        for(count = 0; count < SIZE; ++count)
+        {
+            char choice;
+            std::cout << "Enter the guy category: \ne: Employee m: Manager f: Fink h: Highfink q: quit\n";
+            std::cin >> choice;
+            while (strchr("emfhq", choice) == NULL){
+                 std::cout << "Please enter e, m, f, h or q: ";
+                 std::cin >> choice;
+            }
+            if (choice == 'q')
+                break;
+            switch (choice){
+                case 'e': {
+                    dmitry_emp[count] = new Employee();
+                    break;
+                }
+                case 'm': {
+                    dmitry_emp[count] = new Manager();
+                    break;
+                }
+                case 'f': {
+                    dmitry_emp[count] = new Fink();
+                    break;
+                }
+                case 'h': {
+                    dmitry_emp[count] = new Highfink();
+                    break;
+                }
+            }
+            dmitry_emp[count]->set_all();
+            dmitry_emp[count]->write_all(wrEmpFile);
+            dmitry_emp[count]->show_all();
+        }
+        wrEmpFile.clear();
+        wrEmpFile.close();
+        std::cout << "Creating of file finished\n";
+        return 0;
     }
-
-    std::set<std::string> matts;
-    std::string temp;
-    while(getline(mattsFile, temp)){
-        matts.insert(temp);
+    for(count = 0; (count < SIZE) && !rEmpFile.eof(); ++count)
+    {
+        std::string post;
+        getline(rEmpFile, post);
+        switch(empPost(post)){
+            case EMPLOYEE: {
+                dmitry_emp[count] = new Employee();
+                break;
+            }
+            case MANAGER: {
+                dmitry_emp[count] = new Manager();
+                break;
+            }
+            case FINK: {
+                dmitry_emp[count] = new Fink();
+                break;
+            }
+            case HIGHFINK: {
+                dmitry_emp[count] = new Highfink();
+                break;
+            }
+        }
+        dmitry_emp[count]->read_all(rEmpFile);
+        dmitry_emp[count]->show_all();
+        while (rEmpFile.get() != '\n') continue;
     }
-
-    std::cout << "Patt, enter your filename:\n";
-    std::cin.get(fileName, 40, '\n');
-    eatLine();
-    std::ifstream pattsFile;
-    pattsFile.open(fileName);
-    if (!pattsFile.is_open()){
-        std::cerr << "The file isn't found\n";
-        exit(1);
-    }
-    std::set<std::string> patts;
-    while(getline(pattsFile, temp)){
-        patts.insert(temp);
-    }
-
-    std::cout << "Choose the file for destination:\n";
-    std::cin.get(fileName, 40, '\n');
-    eatLine();
-    std::ofstream destFile;
-    destFile.open(fileName, std::ios_base::out | std::ios_base::trunc);
-    if (!destFile.is_open()){
-        std::cerr << "The file isn't found\n";
-        exit(1);
-    }
-
-    std::set<std::string> united;
-    std::insert_iterator<std::set<std::string>>it(united, united.begin());
-    std::set_union(matts.begin(), matts.end(), patts.begin(), patts.end(), it);
-
-    for (auto itt : united){
-        destFile << itt << std::endl;
-    }
-
-    std::cout << "\nMatt's list: ";
-    std::copy(matts.begin(), matts.end(), out);
-
-    std::cout << "\nPatt's list: ";
-    std::copy(patts.begin(), patts.end(), out);
-
-    std::cout << "\nUnited list: ";
-    std::copy(united.begin(), united.end(), out);
-
-    mattsFile.clear();
-    mattsFile.close();
-    pattsFile.clear();
-    pattsFile.close();
-    destFile.clear();
-    destFile.close();
-
-    std::ifstream inFile;
-    inFile.open(fileName);
-    std::cout << '\n';
-    std::cout << "The file " << fileName << " contains:";
-    while(getline(inFile, temp)){
-        std::cout << temp << '\n';
-    }
-    std::cout << std::endl;
-    inFile.clear();
-    inFile.close();
-
+    rEmpFile.clear();
+    rEmpFile.close();
     return 0;
 }

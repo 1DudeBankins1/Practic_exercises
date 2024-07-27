@@ -2,8 +2,19 @@
 
 #include <cstring>
 #include <iostream>
+#include <fstream>
+
+enum post_t{
+    EMPLOYEE,
+    MANAGER,
+    FINK,
+    HIGHFINK
+};
 
 const int SLEN = 20;
+const std::string post_names[] = {"Employee", "Manager", "Fink", "Highfink"};
+
+int empPost(const std::string post);
 
 class Employee
 {
@@ -11,12 +22,16 @@ protected:
     char fname[SLEN];
     char lname[SLEN];
     char job[SLEN];
+    post_t post;
+
 public:
     Employee();
     Employee(char *fn, char *sn, char *j);
     Employee(const Employee& e);
     virtual void show_all() const;
     virtual void set_all();
+    virtual void write_all(std::ofstream& fout);
+    virtual void read_all(std::ifstream& fout);
     friend std::ostream& operator<<(std::ostream& os, const Employee& e);
 };
 
@@ -31,6 +46,8 @@ public:
     Manager(const Manager& m);
     void show_all() const override;
     void set_all() override;
+    void write_all(std::ofstream& fout) override;
+    void read_all(std::ifstream& fout) override;
 };
 
 class Fink : virtual public Employee
@@ -44,6 +61,8 @@ public:
     Fink(const Fink& f);
     void show_all() const override;
     void set_all() override;
+    void write_all(std::ofstream& fout) override;
+    void read_all(std::ifstream& fout) override;
 };
 
 class Highfink : public Manager, public Fink
@@ -57,4 +76,6 @@ public:
     Highfink(const Highfink& f);
     void show_all() const override;
     void set_all() override;
+    void write_all(std::ofstream& fout) override;
+    void read_all(std::ifstream& fout) override;
 };
